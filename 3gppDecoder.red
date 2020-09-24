@@ -1,18 +1,23 @@
 Red [
     Title: "3GPP DECODER"
-    Author: "KONGLONG"
-    Date: 2019-10-01
-    Version: 1.0.0
-    purpose: "解码wireshark能支持的所有协议"
+    Author: "XuBin, KONGLONG"
+    Contributor: "Mike Li"
+    Date: 2020-09-24
+    Version: 1.0.7
+    purpose: "Convert UI from Chinese to English"
+             "to employ Wireshark decode messages"
     Needs:   'View
 ]
 
 default_config: make map! [
     wireshark-dir: "C:/Program Files/Wireshark"
-    notepadpp-dir: "C:/Program Files/Notepad++"
+    notepadpp-dir: "C:/Program Files (x86)/Notepad++"
     NAT: [
         #(LTE: [
             "lte-rrc.dl.ccch" "lte-rrc.dl.dcch" "lte-rrc.ul.ccch" "lte-rrc.ul.dcch" "s1ap" "x2ap"
+            ])
+        #(LTE-NB: [
+            "nr-rrc.dl.ccch.nb" "nr-rrc.dl.dcch.nb" "nr-rrc.ul.ccch.nb" "nr-rrc.ul.dcch.nb" "s1ap" "x2ap"
             ])
         #(NR: [
             "nr-rrc.dl.ccch" "nr-rrc.dl.dcch" "nr-rrc.ul.ccch" "nr-rrc.ul.dcch" "xnap"
@@ -21,9 +26,7 @@ default_config: make map! [
     ]
 
 if error? try [
-        config-data: read %3gppDecoder.cfg
-        replace/all config-data "^(5c)" "/"
-        config: load-json config-data
+        config: load-json read %3gppDecoder.cfg
     ][
         config: default_config
     ]
@@ -118,13 +121,13 @@ decode-handler: function [
     ;^(22)是"的转义，^(5c)是\的转义
     tshark_cmd: rejoin["^(22)" tshark "^(22) -V -o " wireshark-cmd-arg1 proto wireshark-cmd-arg2 " -r decode_temp.pcap"]
     print tshark_cmd
-    write %decode_result.txt "" 
-    call/wait/output tshark_cmd %decode_result.txt
+    write %decoded_result.txt "" 
+    call/wait/output tshark_cmd %decoded_result.txt
 
     call/wait "del textdata_temp.txt"
     ; call/wait "del decode_temp.pcap"
 
-    output-area/text: read %decode_result.txt
+    output-area/text: read %decoded_result.txt
 ]
 
 
@@ -162,39 +165,42 @@ update-nat-proto: function [
 ]
 
 about-txt: {
-版本: v1.0.6
-源码地址: 
+
+Version:1.0.7
+Source address of the 3GPP decoder:
 https://github.com/konglinglong/3gppDecoder
-面向未来的3GPP解码器，通过修改配置文件，理论上可以解码wireshark现在以及以后支持的所有协议。
-                                  指导: XuBin
-                                  跑腿: KONGLONG
+
+3GPP decoder is a morden 3GPP decoder which can theoretically decode all protocols supported by Wireshark. And in the future, by modifying the configuration file, it can decode any new added in protocol message in the future.
+
+Author: XuBin, KONGLONG
+Contributor: Mike Li
 }
 
 main-window: layout [
-    title "3GPP解码器"
-    text "网络：" 40x25
-    nat-drop-down: drop-down 100x25 data nats
+    title "3GPP Decoder"
+    text "Network Type" 80x25
+    nat-drop-down: drop-down 60x25 data nats
     on-select [
         update-nat-proto face/text
         selected-proto: proto-drop-down/text
     ]
-    text "协议：" 40x25
+    text "Porotocol:" 60x25
     proto-drop-down: drop-down 125x25 data []
     on-select [
         selected-proto: face/text
     ]
-    button "解码" [
+    button "Decode" [
         if selected-proto <> "" [
             decode-handler selected-proto input-area/text
         ]
     ]
-    button "用notepad++打开" [
-        call rejoin[notepad " decode_result.txt"]
+    button "Open it in Notepad++" [
+        call rejoin[notepad " Decoded_result.txt"]
     ]
-    button "用wireshark打开"[
+    button "Open it in Wireshark"[
         open-wireshark-handler selected-proto input-area/text
     ]
-    button "清空" [
+    button "Clear" [
         input-area/text: ""
         ; prep-area/text: ""
         output-area/text: ""
@@ -203,7 +209,7 @@ main-window: layout [
         clear output-area/text
     ]
     return
-    text "输入码流："
+    text "Paste hex codes here:"
     return
     input-area: area focus "" 800x60
     ; return
@@ -211,7 +217,7 @@ main-window: layout [
     ; return
     ;prep-area: area "" 800x60
     return
-    text "解码结果："
+    text "Decoded codes："
     return
     output-area: area "" 800x400
 
@@ -223,8 +229,8 @@ main-window: layout [
 ]
 
 main-window/menu: [
-    "文件" [ "退出" qt ]
-    "帮助" [ "关于" ab ]
+    "File" [ "Quit" qt ]
+    "Help" [ "About" ab ]
     ]
 main-window/actors: make object! [
     on-menu: func [face [object!] event [event!]][ 
@@ -232,8 +238,8 @@ main-window/actors: make object! [
         qt [quit]
         ab [
             view/flags [
-                title "关于"
-                text 300x160 about-txt
+                title "About"
+                text 300x250 about-txt
                 return
                 OK-btn: button "OK" [unview]
                 ] [modal popup]
