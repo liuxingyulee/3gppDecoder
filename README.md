@@ -21,8 +21,8 @@ This 3gppDecoder is based on Wireshark as codec. So it requires installed Wiresh
 </div>
 
 ## How to use the 3gppDecoder
-###Download the 3gppDecoder pacakge
-1. Download the zip package from [Release Page](https://github.com/konglinglong/3gppDecoder/releases) of the decoder.
+###Download the 3gppDecoder packge
+1. Download the zip package from [Release Page](https://github.com/liuxingyulee/3gppDecoder/releases) of the decoder.
 2. Unzip the package, then configure the file of (_3gppDecoder.cfg_). 
    - set the path of the Wireshark in the file. (Note:please just use "\/" but not "\\\" in the path).
    - set the path of the Notepad++ application in the file. (Note:please just use "\/" but not "\\\" in the path). 
