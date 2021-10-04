@@ -17,7 +17,7 @@ This 3gppDecoder is based on Wireshark as codec. So it requires installed Wiresh
 ## User Interface Preview
 
 <div align=center>
-  <img src='https://github.com/konglinglong/3gppDecoder/blob/master/%E7%95%8C%E9%9D%A2.png' alt='preview' />
+  <img src='https://github.com/liuxingyulee/3gppDecoder/blob/master/UI_image_3gppDecoder.png' alt='preview' />
 </div>
 
 ## How to use the 3gppDecoder
