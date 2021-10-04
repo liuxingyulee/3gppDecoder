@@ -1,27 +1,32 @@
 3gppDecoder
 =====
 
-## 概述
+## Readme
 
-使用RED语言实现的3GPP解码器。
- - 支持2G、3G、4G、5G等等等相关通信协议。
- - 理论上，通过修改配置文件，可以解码wireshark未来支持的所有协议。
- - 支持各种乱七八糟的码流输入：
- - - 连续的码流1a2b3c432345
- - - 空格隔开的码流 1a 2b 3c 43 23 45
- - - 逗号隔开的码流 1a,2b,3c,43,23,45
- - - 以0x开头的码流 0x1a 0x2b 0x3c 0x43 0x23 0x45
- - - 以上所有的混合 0x1a,2b ,3c 4323,0x45
+This 3gppDecoder is based on Wireshark as codec. So it requires installed Wiresharek on your PC and configure the path of the Wireshark into the configuration file (_3gppDecoder.cfg_). 
+ - This 3gppDecoder is able to decode the message/stack of GSM, CDMA, WCDMA, LTE, and 5G. The decoding cabability depends on the Wireshark.
+ - You can configure the protocol/stack, i.e., RRC, NAS, etc., to support all types of message/stack which Wireshark supported.  
+ - This 3gppDecoder supports the followings format hexcimal codes as inputs: 
+   - continous codes, e.g., `1a2b3c432345`
+   - codes devided by spaces ` `, e.g., `1a 2b 3c 43 23 45`
+   - codes divided by comma `,`, e.g., `1a,2b,3c,43,23,45`
+   - codes headed by `0x`, e.g., `0x1a 0x2b 0x3c 0x43 0x23 0x45`
+   - mixed codes by all above fomats, e.g., `0x1a,2b ,3c 4323,0x45`
+    
  
-## 预览
+## User Interface Preview
 
 <div align=center>
   <img src='https://github.com/konglinglong/3gppDecoder/blob/master/%E7%95%8C%E9%9D%A2.png' alt='preview' />
 </div>
 
-## 使用
-#### 1. 从GitHub的releases页面下载[3gppDecoder-Release-XXX.zip](https://github.com/konglinglong/3gppDecoder/releases)
-#### 2. 解压到一个文件夹，打开3gppDecoder.cfg配置文件：
- - 修改wireshark路径（注意：路径只支持"/"，不支持"\\"）
- - 修改notepad++路径（注意：路径只支持"/"，不支持"\\"）
- - 增加配置文件里面没有但你需要用到的协议（前提是你的wireshark版本支持）
+## How to use the 3gppDecoder
+###Download the 3gppDecoder pacakge
+1. Download the zip package from [Release Page](https://github.com/konglinglong/3gppDecoder/releases) of the decoder.
+2. Unzip the package, then configure the file of (_3gppDecoder.cfg_). 
+   - set the path of the Wireshark in the file. (Note:please just use "\/" but not "\\\" in the path).
+   - set the path of the Notepad++ application in the file. (Note:please just use "\/" but not "\\\" in the path). 
+   - configure the protocol/stack, i.e., RRC, NAS, etc., into the file, as long as the Wireshark supports.
+###Download the source code, compile it by [RED](https://static.red-lang.org/dl/auto/win/red-latest.exe)
+1. After both source code and the .exe file of RED have been downloaded, run `D:\DevTools\red\red.exe 3gppDecoder.red` in a command line terminal to compile the source code.
+2. When the compiling finishs, run `D:\DevTools\red\red.exe -r -t windows 3gppDecoder.red` in the terminal. (Note: Since there is some bug of RED, it needs direct path like the exmaple.Else, it may prompt `PROGRAM ERROR: Invalid encapsulated data`.)
