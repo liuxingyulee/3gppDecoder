@@ -27,6 +27,6 @@ This 3gppDecoder is based on Wireshark as codec. So it requires installed Wiresh
    - set the path of the Wireshark in the file. (Note:please just use "\/" but not "\\\" in the path).
    - set the path of the Notepad++ application in the file. (Note:please just use "\/" but not "\\\" in the path). 
    - configure the protocol/stack, i.e., RRC, NAS, etc., into the file, as long as the Wireshark supports.
-###Download the source code, compile it by [RED](https://static.red-lang.org/dl/auto/win/red-latest.exe)
+###Download the source code, compile it by [RED](https://www.red-lang.org/)
 1. After both source code and the .exe file of RED have been downloaded, run `D:\DevTools\red\red.exe 3gppDecoder.red` in a command line terminal to compile the source code.
 2. When the compiling finishs, run `D:\DevTools\red\red.exe -r -t windows 3gppDecoder.red` in the terminal. (Note: Since there is some bug of RED, it needs direct path like the exmaple.Else, it may prompt `PROGRAM ERROR: Invalid encapsulated data`.)
