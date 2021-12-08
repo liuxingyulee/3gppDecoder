@@ -2,8 +2,8 @@ Red [
     Title: "3GPP DECODER"
     Author: "KONGLONG"
     Date: 2019-10-01
-    Version: 1.0.0
-    purpose: "解码wireshark能支持的所有协议"
+    Version: 1.0.7
+    purpose: "To decode binary codes of protocols in LTE and 5G which are supported by wireshark. "
     Needs:   'View
 ]
 
@@ -64,7 +64,7 @@ proc-hex-str: function [
     whitespace: charset reduce [space tab cr lf]
     hex-digits: charset ["0123456789" #"a" - #"f" #"A" - #"F"]
 
-    replace/all src-str "," " "
+    replace/all src-str "," " "               ;replace all "," to blank from source string
     replace/all src-str "0x" " "
     replace/all src-str "0X" " "
 
@@ -162,39 +162,39 @@ update-nat-proto: function [
 ]
 
 about-txt: {
-版本: v1.0.6
-源码地址: 
+Version: v1.0.7
+Source code: 
 https://github.com/konglinglong/3gppDecoder
-面向未来的3GPP解码器，通过修改配置文件，理论上可以解码wireshark现在以及以后支持的所有协议。
-                                  指导: XuBin
-                                  跑腿: KONGLONG
+3GPP Decoder is a Binary/Hex string decoder which support the same set of protocols decoding as Wireshark, since this decoder is a UI of tshark.exe and text2pcap.exe of Wireshark.
+Authors: XuBin, KONGLONG
+Contributor: Mike
 }
 
 main-window: layout [
-    title "3GPP解码器"
-    text "网络：" 40x25
+    title "3GPP Decoder"
+    text "Network Type:" 80x25
     nat-drop-down: drop-down 100x25 data nats
     on-select [
         update-nat-proto face/text
         selected-proto: proto-drop-down/text
     ]
-    text "协议：" 40x25
+    text "Protocol:" 40x25
     proto-drop-down: drop-down 125x25 data []
     on-select [
         selected-proto: face/text
     ]
-    button "解码" [
+    button "Decode" [
         if selected-proto <> "" [
             decode-handler selected-proto input-area/text
         ]
     ]
-    button "用notepad++打开" [
-        call rejoin[notepad " decode_result.txt"]
+    button "Open it in Notepad++" [
+        call rejoin[notepad "decoded_result.txt"]
     ]
-    button "用wireshark打开"[
+    button "Open it in Wireshark"[
         open-wireshark-handler selected-proto input-area/text
     ]
-    button "清空" [
+    button "Clear" [
         input-area/text: ""
         ; prep-area/text: ""
         output-area/text: ""
@@ -203,15 +203,15 @@ main-window: layout [
         clear output-area/text
     ]
     return
-    text "输入码流："
+    text "Paste codes here："
     return
     input-area: area focus "" 800x60
     ; return
-    ; text "码流预处理："
+    ; text "Decoding："
     ; return
     ;prep-area: area "" 800x60
     return
-    text "解码结果："
+    text "Decoded result："
     return
     output-area: area "" 800x400
 
@@ -223,8 +223,8 @@ main-window: layout [
 ]
 
 main-window/menu: [
-    "文件" [ "退出" qt ]
-    "帮助" [ "关于" ab ]
+    "File" [ "Quit" qt ]
+    "Help" [ "About" ab ]
     ]
 main-window/actors: make object! [
     on-menu: func [face [object!] event [event!]][ 
@@ -232,8 +232,8 @@ main-window/actors: make object! [
         qt [quit]
         ab [
             view/flags [
-                title "关于"
-                text 300x160 about-txt
+                title "About"
+                text 400x160 about-txt
                 return
                 OK-btn: button "OK" [unview]
                 ] [modal popup]
