@@ -1,7 +1,7 @@
 Red [
     Title: "3GPP DECODER"
-    Author: "KONGLONG"
-    Date: 2019-10-01
+    Author: "XuBin, KONGLONG"
+    Date: 2020-09-24
     Version: 1.0.7
     purpose: "To decode binary codes of protocols in LTE and 5G which are supported by wireshark. "
     Needs:   'View
@@ -13,6 +13,9 @@ default_config: make map! [
     NAT: [
         #(LTE: [
             "lte-rrc.dl.ccch" "lte-rrc.dl.dcch" "lte-rrc.ul.ccch" "lte-rrc.ul.dcch" "s1ap" "x2ap"
+            ])
+        #(LTE-NB: [
+            "nr-rrc.dl.ccch.nb" "nr-rrc.dl.dcch.nb" "nr-rrc.ul.ccch.nb" "nr-rrc.ul.dcch.nb" "s1ap" "x2ap"
             ])
         #(NR: [
             "nr-rrc.dl.ccch" "nr-rrc.dl.dcch" "nr-rrc.ul.ccch" "nr-rrc.ul.dcch" "xnap"
@@ -173,12 +176,12 @@ Contributor: Mike
 main-window: layout [
     title "3GPP Decoder"
     text "Network Type:" 80x25
-    nat-drop-down: drop-down 100x25 data nats
+    nat-drop-down: drop-down 60x25 data nats
     on-select [
         update-nat-proto face/text
         selected-proto: proto-drop-down/text
     ]
-    text "Protocol:" 40x25
+    text "Protocol:" 60x25
     proto-drop-down: drop-down 125x25 data []
     on-select [
         selected-proto: face/text
@@ -233,7 +236,7 @@ main-window/actors: make object! [
         ab [
             view/flags [
                 title "About"
-                text 400x160 about-txt
+                text 300x250 about-txt
                 return
                 OK-btn: button "OK" [unview]
                 ] [modal popup]
